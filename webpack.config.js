@@ -14,7 +14,8 @@ module.exports = {
     output: {
         path: resolve(__dirname, "dist"),
         filename: "js/[name].js",
-        chunkFilename: "js/[chunkhash].js"
+        chunkFilename: "js/[chunkhash].js",
+        publicPath: '/Taskeen_Haider/' // Replace with your repository name
     },
     mode: "development",
     plugins: [
@@ -47,6 +48,9 @@ module.exports = {
                 { from: "src/assets/images", to: "images" },
                 { from: "src/assets/locales", to: "locales" },
             ],
+        }),
+        new plugins.html({
+            template: './src/index.html'
         })
     ],
     module: {
@@ -86,6 +90,17 @@ module.exports = {
                     filename: "fonts/[contenthash][ext]",
                 }
             },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                }
+            },
+            {
+                test: /\.sass$/,
+                use: ['style-loader', 'css-loader', 'sass-loader']
+            }
         ],
     },
     devServer: {
@@ -97,7 +112,8 @@ module.exports = {
             rewrites: [
                 { from: /./, to: "/404.html" },
             ],
-        }
+        },
+        compress: true
     },
 
     resolve: {
